@@ -95,16 +95,11 @@ class DBHelper {
     xhr.send();
   }
 
-
-  static putRestaurants(callback) {
-
-  }
-
   /**
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id, callback) {
-    fetch(`${DBHelper.API_URL}/restaurants/${id}`).then(response => {
+    fetch(`${DBHelper.DATABASE_URL}/restaurants/${id}`).then(response => {
       if (!response.ok) return Promise.reject("Restaurant couldn't be fetched from network");
       return response.json();
     }).then(fetchedRestaurant => {
