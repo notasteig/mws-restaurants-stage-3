@@ -4,6 +4,7 @@ const dbPromise = {
     switch (upgradeDb.oldVersion) {
       case 0:
         upgradeDb.createObjectStore('restaurants', { keyPath: 'id' });
+        upgradeDb.createObjectStore('reviews', { keyPath: 'id' });
     }
   }),
 
@@ -15,6 +16,9 @@ const dbPromise = {
     return this.db.then(db => {
       const store = db.transaction('restaurants', 'readwrite').objectStore('restaurants');
       Promise.all(restaurants.map(networkRestaurant => {
+
+        console.log('add reviews to restaurant');
+
         return store.get(networkRestaurant.id).then(idbRestaurant => {
           if (!idbRestaurant || networkRestaurant.updatedAt > idbRestaurant.updatedAt) {
             return store.put(networkRestaurant);  
@@ -96,7 +100,7 @@ class DBHelper {
   }
 
   /**
-   * Fetch a restaurant by its ID.
+   * Fetch a restaurant by its id.
    */
   static fetchRestaurantById(id, callback) {
     fetch(`${DBHelper.DATABASE_URL}/restaurants/${id}`).then(response => {
@@ -111,6 +115,27 @@ class DBHelper {
       console.log(`${networkError}, trying idb.`);
       dbPromise.getRestaurants(id).then(idbRestaurant => {
         if (!idbRestaurant) return callback("Restaurant not found in idb either", null);
+        return callback(null, idbRestaurant);
+      });
+    });
+  }
+
+  /**
+   * Fetch reviews by restaurant id.
+   */
+  static fetchReviewsByRestaurantId(id, callback) {
+    fetch(`http://localhost:1337/reviews/?restaurant_id=${id}`).then(response => {
+      if (!response.ok) return Promise.reject("Reviews couldn't be fetched from network");
+      return response.json();
+    }).then(fetchedRestaurant => {
+      // if restaurant could be fetched from network:
+      dbPromise.putRestaurants(fetchedRestaurant);
+      return callback(null, fetchedRestaurant);
+    }).catch(networkError => {
+      // if restaurant couldn't be fetched from network:
+      console.log(`${networkError}, trying idb.`);
+      dbPromise.getRestaurants(id).then(idbRestaurant => {
+        if (!idbRestaurant) return callback("Reviews not found in idb either", null);
         return callback(null, idbRestaurant);
       });
     });

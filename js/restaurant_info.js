@@ -73,8 +73,17 @@ fetchRestaurantFromURL = (callback) => {
       fillRestaurantHTML();
       callback(null, restaurant)
     });
+
+    DBHelper.fetchReviewsByRestaurantId(id, (error, reviews) => {
+      console.log(reviews);
+      callback(null, restaurant)
+    });
+
+
+
   }
 }
+
 
 /**
  * Create restaurant HTML and add it to the webpage
