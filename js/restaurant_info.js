@@ -78,8 +78,7 @@ fetchRestaurantFromURL = (callback) => {
     });
 
     DBHelper.fetchReviewsByRestaurantId(id, (error, reviews) => {
-      console.log(reviews);
-      callback(null, restaurant)
+      self.restaurant.reviews = reviews;
     });
 
 

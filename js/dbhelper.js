@@ -28,6 +28,25 @@ const dbPromise = {
   },
 
   /**
+   * Save reviews.
+   */
+  putReviews(reviews) {
+    if (!reviews.push) reviews = [reviews];
+    return this.db.then(db => {
+      const store = db.transaction('reviews', 'readwrite').objectStore('reviews');
+      Promise.all(reviews.map(networkReview => {
+        return store.get(networkReview.id).then(idbReview => {
+          if (!idbReview || networkReview.updatedAt > idbReview.updatedAt) {
+            return store.put(networkReview);  
+          } 
+        });
+      })).then(function () {
+        return store.complete;
+      });
+    });
+  },
+
+  /**
    * Get a restaurant, by its id, or all stored restaurants in idb using promises.
    * If no argument is passed, all restaurants will returned.
    */
@@ -124,16 +143,16 @@ class DBHelper {
     fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`).then(response => {
       if (!response.ok) return Promise.reject("Reviews couldn't be fetched from network");
       return response.json();
-    }).then(fetchedRestaurant => {
+    }).then(fetchedReviews => {
       // if restaurant could be fetched from network:
-      dbPromise.putRestaurants(fetchedRestaurant);
-      return callback(null, fetchedRestaurant);
+      dbPromise.putReviews(fetchedReviews);
+      return callback(null, fetchedReviews);
     }).catch(networkError => {
       // if restaurant couldn't be fetched from network:
       console.log(`${networkError}, trying idb.`);
-      dbPromise.getRestaurants(id).then(idbRestaurant => {
-        if (!idbRestaurant) return callback("Reviews not found in idb either", null);
-        return callback(null, idbRestaurant);
+      dbPromise.getRestaurants(id).then(idbReviews => {
+        if (!idbReviews) return callback("Reviews not found in idb either", null);
+        return callback(null, idbReviews);
       });
     });
   }
