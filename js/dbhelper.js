@@ -16,9 +16,6 @@ const dbPromise = {
     return this.db.then(db => {
       const store = db.transaction('restaurants', 'readwrite').objectStore('restaurants');
       Promise.all(restaurants.map(networkRestaurant => {
-
-        console.log('add reviews to restaurant');
-
         return store.get(networkRestaurant.id).then(idbRestaurant => {
           if (!idbRestaurant || networkRestaurant.updatedAt > idbRestaurant.updatedAt) {
             return store.put(networkRestaurant);  
@@ -57,7 +54,7 @@ class DBHelper {
    */
   static get DATABASE_URL() {
     const port = 1337 // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
+    return `http://localhost:${port}`;
   }
 
   /**
@@ -65,7 +62,7 @@ class DBHelper {
    */
   static fetchRestaurants(callback) {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', DBHelper.DATABASE_URL);
+    xhr.open('GET', `${DBHelper.DATABASE_URL}/restaurants`);
     xhr.onload = () => {
       if (xhr.status === 200) { // Got a success response from server!
         const restaurants = JSON.parse(xhr.responseText);
@@ -124,7 +121,7 @@ class DBHelper {
    * Fetch reviews by restaurant id.
    */
   static fetchReviewsByRestaurantId(id, callback) {
-    fetch(`http://localhost:1337/reviews/?restaurant_id=${id}`).then(response => {
+    fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`).then(response => {
       if (!response.ok) return Promise.reject("Reviews couldn't be fetched from network");
       return response.json();
     }).then(fetchedRestaurant => {
