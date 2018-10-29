@@ -175,10 +175,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
-  
   container.appendChild(ul);
-  container.appendChild(createReviewForm(review));
-
 }
 
 /**
@@ -206,62 +203,6 @@ createReviewHTML = (review) => {
   li.appendChild(comments);
 
   return li;
-}
-
-createReviewForm = (review) => {
-  const form = document.createElement('form');
-  form.id = "review-form";
-  form.dataset.restaurantId = restaurantId;
-
-  let p = document.createElement('p');
-  const name = document.createElement('input');
-  name.id = "name"
-  name.setAttribute('type', 'text');
-  name.setAttribute('aria-label', 'Name');
-  name.setAttribute('placeholder', 'Enter Your Name');
-  p.appendChild(name);
-  form.appendChild(p);
-
-  p = document.createElement('p');
-  const selectLabel = document.createElement('label');
-  selectLabel.setAttribute('for', 'rating');
-  selectLabel.innerText = "Your rating: ";
-  p.appendChild(selectLabel);
-  const select = document.createElement('select');
-  select.id = "rating";
-  select.name = "rating";
-  select.classList.add('rating');
-  ["--", 1,2,3,4,5].forEach(number => {
-    const option = document.createElement('option');
-    option.value = number;
-    option.innerHTML = number;
-    if (number === "--") option.selected = true;
-    select.appendChild(option);
-  });
-  p.appendChild(select);
-  form.appendChild(p);
-
-  p = document.createElement('p');
-  const textarea = document.createElement('textarea');
-  textarea.id = "comments";
-  textarea.setAttribute('aria-label', 'comments');
-  textarea.setAttribute('placeholder', 'Enter any comments here');
-  textarea.setAttribute('rows', '10');
-  p.appendChild(textarea);
-  form.appendChild(p);
-
-  p = document.createElement('p');
-  const addButton = document.createElement('button');
-  addButton.setAttribute('type', 'submit');
-  addButton.setAttribute('aria-label', 'Add Review');
-  addButton.classList.add('add-review');
-  addButton.innerHTML = "<span>+</span>";
-  p.appendChild(addButton);
-  form.appendChild(p);
-
-  form.onsubmit = handleSubmit;
-
-  return form;
 }
 
 /**
