@@ -79,9 +79,8 @@ fetchRestaurantFromURL = (callback) => {
 
     DBHelper.fetchReviewsByRestaurantId(id, (error, reviews) => {
       self.restaurant.reviews = reviews;
+      fillReviewsHTML(reviews);
     });
-
-
 
   }
 }

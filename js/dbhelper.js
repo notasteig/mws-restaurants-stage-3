@@ -148,8 +148,6 @@ class DBHelper {
       dbPromise.putReviews(fetchedReviews);
       return callback(null, fetchedReviews);
     }).catch(networkError => {
-      // if restaurant couldn't be fetched from network:
-      console.log(`${networkError}, trying idb.`);
       dbPromise.getRestaurants(id).then(idbReviews => {
         if (!idbReviews) return callback("Reviews not found in idb either", null);
         return callback(null, idbReviews);
