@@ -78,8 +78,11 @@ fetchRestaurantFromURL = (callback) => {
     });
 
     DBHelper.fetchReviewsByRestaurantId(id, (error, reviews) => {
-      self.restaurant.reviews = reviews;
-      fillReviewsHTML(reviews);
+      console.log(reviews);
+      self.restaurant.reviews = [reviews];
+      if(reviews.length > 0) {
+        fillReviewsHTML(reviews);
+      }
     });
 
   }
@@ -179,14 +182,15 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  * Create review HTML and add it to the webpage.
  */
 createReviewHTML = (review) => {
+
   const li = document.createElement('li');
   const name = document.createElement('p');
   name.innerHTML = review.name;
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
-  li.appendChild(date);
+  date.innerHTML = review.createdAt;
+  //li.appendChild(date);
 
   const rating = document.createElement('p');
   rating.className = `rating-${review.rating}-starts`;
