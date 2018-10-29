@@ -71,7 +71,7 @@
 
       <!-- Add Review -->
        
-      <div role="form" id="reviews-submit">
+      <form onsubmit="return handleSubmit()" id="reviews-submit">
           <legend id="contact">Add Review</legend>
 
           <div>
@@ -105,12 +105,12 @@
           </div>
 
           <div>
-            <label for="review">Review</label><br>
-            <textarea id="review" rows="10" cols="50"></textarea>
+            <label for="comments">Comments</label><br>
+            <textarea id="comments" rows="10" cols="50"></textarea>
           </div>
 
           <input type="submit" value="Add Review">
-        </div>
+        </form>
       
     </section>
     <!-- End reviews -->

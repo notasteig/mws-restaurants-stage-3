@@ -201,7 +201,7 @@ createReviewHTML = (review) => {
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
   li.appendChild(comments);
-
+  console.log('test');
   return li;
 }
 
@@ -214,6 +214,15 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
   li.innerHTML = restaurant.name;
   li.setAttribute('aria-current', 'page');
   breadcrumb.appendChild(li);
+}
+
+handleSubmit = () => {
+
+  const name = document.getElementById('name').value;
+  const rating = document.querySelector('input[name = "rating"]:checked').value;
+  const comments = document.getElementById('comments').value;
+
+  return false;
 }
 
 /**
