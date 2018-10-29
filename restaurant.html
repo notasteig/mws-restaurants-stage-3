@@ -55,6 +55,46 @@
     <!-- Beginning reviews -->
     <section id="reviews-container">
       <ul id="reviews-list"></ul>
+      <div role="form" id="reviews-submit">
+          <legend id="contact">Add Review</legend>
+
+          <div>
+            <label for="name">Name</label><br>
+            <input id="name" type="text" size="25">
+          </div>
+
+
+          <div>
+            <label for="rating">Rating:</label>
+            
+            <label for="rating-3">1</label>
+            <input type="radio" id="rating-1"
+                   name="rating" value="1" />
+
+            <label for="rating-2">2</label>
+            <input type="radio" id="rating-2"
+                   name="rating" value="2" />
+
+            <label for="rating-3">3</label>
+            <input type="radio" id="rating-3"
+                   name="rating" value="3" />
+
+            <label for="rating-4">4</label>
+            <input type="radio" id="rating-4"
+                   name="rating" value="4" />
+
+            <label for="rating-5">5</label>
+            <input type="radio" id="rating-5"
+                   name="rating" value="5" checked />
+          </div>
+
+          <div>
+            <label for="review">Review</label><br>
+            <textarea id="review" rows="10" cols="50"></textarea>
+          </div>
+
+          <input type="submit" value="Add Review">
+        </div>
     </section>
     <!-- End reviews -->
   </main>
