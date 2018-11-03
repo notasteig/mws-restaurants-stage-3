@@ -5,6 +5,7 @@ const dbPromise = {
       case 0:
         upgradeDb.createObjectStore('restaurants', { keyPath: 'id' });
         upgradeDb.createObjectStore('reviews', { keyPath: 'id' });
+        upgradeDb.createObjectStore('offlineReviews', {keyPath: 'id' })
     }
   }),
 
@@ -42,6 +43,9 @@ const dbPromise = {
         });
       })).then(function () {
         return store.complete;
+      }).catch(function(error) {
+        console.log('Couldnt add the review :(');
+        console.error(error);
       });
     });
   },

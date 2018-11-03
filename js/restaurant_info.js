@@ -116,8 +116,6 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
-  // fill reviews
-  fillReviewsHTML();
 }
 
 /**
@@ -201,7 +199,7 @@ createReviewHTML = (review) => {
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
   li.appendChild(comments);
-  console.log('test');
+
   return li;
 }
 
@@ -216,13 +214,43 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
   breadcrumb.appendChild(li);
 }
 
-handleSubmit = () => {
+handleSubmitReview = () => {
 
-  const name = document.getElementById('name').value;
-  const rating = document.querySelector('input[name = "rating"]:checked').value;
-  const comments = document.getElementById('comments').value;
+  const review = {};
+  review['name'] = document.getElementById('name').value;
+  review['rating'] = document.querySelector('input[name = "rating"]:checked').value;
+  review['comments'] = document.getElementById('comments').value;
+  review['restaurant_id'] = getParameterByName('restaurant_id');
+
+  postNewReview(review);
 
   return false;
+}
+
+postNewReview = (review) => {
+  console.log('postNewReview()');
+  console.log(review);
+
+  const url = `${DBHelper.DATABASE_URL}/reviews/`;
+  const POST = {
+    method: 'POST',
+    body: JSON.stringify(review)
+  };
+
+  // TODO: use Background Sync to sync data with API server
+  return fetch(url, POST).then(response => {
+    if (!response.ok) return Promise.reject("We couldn't post review to server.");
+    return response.json();
+  }).then(newNetworkReview => {
+    console.log('Post returned....');
+    console.log('review_id', newNetworkReview.id);
+
+    console.log('Add to idb...');
+    //dbPromise.putReviews(newNetworkReview);
+
+  });
+
+
 }
 
 /**
