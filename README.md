@@ -16,7 +16,7 @@ Coming soon...
 
 ### Running the API Server
 The API server needs to be running locally for this to function. You can find the API server here:
-https://github.com/Udacity/mws-restaurant-stage-2
+https://github.com/Udacity/mws-restaurant-stage-3
 
 ### What do I do from here?
 1. In this folder, start up a simple HTTP server to serve up the site files on your local computer. Python has some simple tools to do this, and you don't even need to know Python. For most people, it's already installed on your computer. 
